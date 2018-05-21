@@ -1,0 +1,145 @@
+@import "variables";
+
+body{
+  font-family: 'Roboto', sans-serif;
+  color: $main-font;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main{
+  flex: 1;
+  background: $gray-light;
+}
+a{
+  text-decoration: none;
+}
+.wrapper{
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.header{
+  background: $blue;
+  color: $white;
+  height: 50px;
+  line-height: 50px;
+
+  &__container{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__right{
+    background: $blue-dark;
+    padding: 0 15px;
+    cursor: pointer;
+  }
+  &__left{
+    display: inline-block;
+    color: $white;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+.main-info .wrapper{
+  padding-top: 40px;
+}
+input[type="file"]{
+  display: none;
+}
+.files-container{
+  margin-top: 8px;
+  display: block;
+  background: $white;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 15px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.3);
+  color: $gray2;
+}
+
+.h-money{
+  padding: 0 20px;
+  margin: 0 7px;
+  background: $blue-dark;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.footer{
+  height: 70px;
+  box-shadow: $shadow-1;
+
+  &__copyright{
+    color: $gray;
+    font-size: 14px;
+  }
+}
+.preheader{
+  background: $white;
+  height: 137px;
+  border-bottom: 1px solid $gray;
+  padding: 40px 0 0;
+  box-sizing: border-box;
+}
+.preheader__desk{
+  color: $gray;
+  position: relative;
+
+  &_back::before{
+    content: '«';
+    position: absolute;
+    left: -13px;
+  }
+}
+.big-map{
+  width: calc(60% - 15px);
+  margin-left: 15px;
+  display: inline-block;
+}
+.inputs{
+  display: inline-block;
+  width: 40%;
+
+  &__item{
+    margin-top: 25px;
+
+    &:first-child{
+      margin-top: 0;
+    }
+  }
+}
+label{
+  display: block;
+  color: $gray;
+}
+input,
+select{
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px;
+  height: 32px;
+  margin-top: 8px;
+
+  &::placeholder{
+    color: $gray2;
+  }
+}
+select{
+  position: relative;
+  display: block;
+  -webkit-appearance: none;
+
+  &::after{
+    position: absolute;
+    content: '';
+    height: 15px;
+    width: 15px;
+    background: $white;
+    right: 0;
+    z-index: 2;
+  }
+}
+
+
