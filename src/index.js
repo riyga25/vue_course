@@ -1,3 +1,1 @@
-import _ from 'lodash';
-import './sass/styles.scss';
-import './app';
+import './styles/styles.scss';

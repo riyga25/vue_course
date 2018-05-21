@@ -1,0 +1,169 @@
+@import "variables";
+
+body{
+  font-family: 'Roboto', sans-serif;
+  color: $main-font;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main{
+  flex: 1;
+  background: $gray-light;
+}
+a{
+  text-decoration: none;
+}
+label{
+  display: block;
+  color: $gray;
+}
+input,
+select{
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px;
+  height: 32px;
+  margin-top: 8px;
+
+  &::placeholder{
+    color: $gray2;
+  }
+}
+select{
+  position: relative;
+  display: block;
+}
+img{
+  max-width: 100%;
+}
+input[type="file"]{
+  left: -148px;
+  top: 23px;
+  position: absolute;
+  outline: none;
+  color: $gray2;
+}
+.wrapper{
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.header{
+  background: $blue;
+  color: $white;
+  height: 50px;
+  line-height: 50px;
+
+  &__container{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__right{
+    background: $blue-dark;
+    padding: 0 15px;
+    cursor: pointer;
+  }
+  &__left{
+    display: inline-block;
+    color: $white;
+    font-weight: bold;
+    font-size: 20px;
+  }
+}
+.main-info .wrapper{
+  padding: 40px 0;
+}
+
+.h-money{
+  padding: 0 20px;
+  margin: 0 7px;
+  background: $blue-dark;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+.footer{
+  height: 70px;
+  box-shadow: $shadow-1;
+
+  &__copyright{
+    color: $gray;
+    font-size: 14px;
+  }
+}
+.preheader{
+  background: $white;
+  height: 137px;
+  border-bottom: 1px solid $gray2;
+  padding: 40px 0 0;
+  box-sizing: border-box;
+}
+.preheader__desk{
+  color: $gray;
+  position: relative;
+
+  &_back::before{
+    content: '«';
+    position: absolute;
+    left: -13px;
+  }
+}
+.big-map{
+  width: calc(60% - 15px);
+  margin-left: 15px;
+  display: inline-block;
+
+  &__img{
+    height: 550px;
+  }
+  &__label{
+    color: $gray;
+    margin-bottom: 8px;
+  }
+}
+.upload-file{
+
+  &__label{
+    margin-bottom: 35px;
+    position: relative;
+    overflow: hidden;
+  }
+  &__place{
+    margin-top: 8px;
+    display: block;
+    background: $white;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.3);
+  }
+  &__preview{
+    height: 150px;
+    text-align: center;
+    overflow: hidden;
+
+    img{
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}
+.inputs{
+  display: inline-block;
+  width: 40%;
+
+  &__item{
+    margin-top: 25px;
+
+    &:first-child{
+      margin-top: 0;
+    }
+  }
+}
+.flex-container{
+  display: flex;
+}
+
+
