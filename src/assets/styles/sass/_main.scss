@@ -2,6 +2,7 @@
 
 body{
   font-family: 'Roboto', sans-serif;
+  font-size: 14px;
   color: $main-font;
   display: flex;
   flex-direction: column;
@@ -25,6 +26,8 @@ select{
   padding: 0 16px;
   height: 32px;
   margin-top: 8px;
+  border: 1px solid $gray2;
+  background: $gray-light;
 
   &::placeholder{
     color: $gray2;
@@ -38,11 +41,7 @@ img{
   max-width: 100%;
 }
 input[type="file"]{
-  left: -148px;
-  top: 23px;
-  position: absolute;
-  outline: none;
-  color: $gray2;
+  display: none;
 }
 .wrapper{
   max-width: 1240px;
@@ -51,8 +50,8 @@ input[type="file"]{
 .header{
   background: $blue;
   color: $white;
-  height: 50px;
-  line-height: 50px;
+  height: 48px;
+  line-height: 48px;
 
   &__container{
     display: flex;
@@ -67,7 +66,10 @@ input[type="file"]{
     display: inline-block;
     color: $white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
+  }
+  &__center{
+    font-size: 14px;
   }
 }
 .main-info .wrapper{
@@ -75,21 +77,26 @@ input[type="file"]{
 }
 
 .h-money{
-  padding: 0 20px;
   margin: 0 7px;
   background: $blue-dark;
   display: inline-block;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 22px;
   letter-spacing: 1px;
+  width: 112px;
+  height: 100%;
+  border: none;
+  color: white;
+  text-align: center;
+  outline: none;
 }
 .footer{
   height: 70px;
-  box-shadow: $shadow-1;
+  border-top: 1px solid #e6e6e6;
 
   &__copyright{
     color: $gray;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 .preheader{
@@ -138,6 +145,8 @@ input[type="file"]{
     padding: 0 15px;
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.3);
+    background: $gray-light;
+    cursor: pointer;
   }
   &__preview{
     height: 150px;
@@ -165,5 +174,3 @@ input[type="file"]{
 .flex-container{
   display: flex;
 }
-
-

@@ -6,10 +6,10 @@
                 Прогуляй стипендию!
             </a>
             <div class="header__center">
-                Размер стипендии <span class="h-money">2000</span> ₽
+              Размер стипендии <input type="text" class="h-money" value="2000"> ₽
             </div>
             <div class="header__right">
-                Добавить место
+                Добавить место {{ text }}
             </div>
         </div>
     </header>
@@ -49,7 +49,7 @@
                                 <input class="upload-file__input" type="file" id="place-photo" accept="image/jpeg,image/jpg,image/png">
                             </label>
                             <div class="upload-file__preview">
-                                <img src="img/uploadphoto.jfif" alt="image">
+                                <img src="./assets/img/uploadphoto.jpg" alt="image">
                             </div>
                         </div>
                     </div>
@@ -71,8 +71,7 @@
 
 <script>
 export default {
-  name: 'app',
-  data () {}
+  name: 'app'
 }
 </script>
 
