@@ -8,8 +8,8 @@
             <div class="header__center">
               Размер стипендии <input type="text" class="h-money" value="2000"> ₽
             </div>
-            <div class="header__right">
-                Добавить место {{ text }}
+            <div class="header__right" @click="xx">
+                Добавить место
             </div>
         </div>
     </header>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="big-map">
                     <div class="big-map__label">Укажите место на карте:</div>
-                    <div class="big-map__img" style="background-image: url('./assets/img/bigmap.png');background-position: center"></div>
+                    <div class="big-map__img" style="background-image: url('./src/assets/img/bigmap.png');background-position: center"></div>
                 </div>
             </div>
         </div>
@@ -71,10 +71,16 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data: function () {
+    return{
+      count: 0
+    }
+  },
+  methods:{
+    xx: function () {
+      console.log(this.count++);
+    }
+  }
 }
 </script>
-
-<style lang="scss">
-
-</style>
