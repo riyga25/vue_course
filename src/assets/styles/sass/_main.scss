@@ -4,9 +4,6 @@ body{
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   color: $main-font;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 main{
   flex: 1;
@@ -28,14 +25,37 @@ select{
   margin-top: 8px;
   border: 1px solid $gray2;
   background: $gray-light;
+  -webkit-appearance: none;
 
   &::placeholder{
     color: $gray2;
   }
 }
-select{
+.template{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.select-container{
   position: relative;
-  display: block;
+
+  &::after,
+  &::before{
+    content: '';
+    position: absolute;
+    top: 24px;
+    height: 1px;
+    width: 13px;
+    background: $gray2;
+  }
+  &::after{
+    transform: rotate(45deg);
+    right: 18px;
+  }
+  &::before{
+    transform: rotate(-45deg);
+    right: 10px;
+  }
 }
 img{
   max-width: 100%;
@@ -105,17 +125,22 @@ input[type="file"]{
   border-bottom: 1px solid $gray2;
   padding: 40px 0 0;
   box-sizing: border-box;
-}
-.preheader__desk{
-  color: $gray;
-  position: relative;
 
-  &_back::before{
-    content: '«';
-    position: absolute;
-    left: -13px;
+  &__desk{
+    color: $gray;
+    position: relative;
+
+    &_back::before{
+      content: '«';
+      position: absolute;
+      left: -13px;
+    }
+  }
+  &__range{
+    width: 816px;
   }
 }
+
 .big-map{
   width: calc(60% - 15px);
   margin-left: 15px;
@@ -173,4 +198,8 @@ input[type="file"]{
 }
 .flex-container{
   display: flex;
+}
+.gray-text{
+  font-size: 14px;
+  color: $gray;
 }

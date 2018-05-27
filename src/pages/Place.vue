@@ -1,18 +1,6 @@
 <template>
-  <div id="app">
-    <header class="header">
-      <div class="wrapper header__container">
-        <a href="/" class="header__left">
-          Прогуляй стипендию!
-        </a>
-        <div class="header__center">
-          Размер стипендии <input type="text" class="h-money" value="2000"> ₽
-        </div>
-        <div class="header__right" @click="plusOne">
-          Добавить место
-        </div>
-      </div>
-    </header>
+  <div class="template">
+    <Header></Header>
     <main>
       <div class="preheader">
         <div class="wrapper">
@@ -38,9 +26,11 @@
               </div>
               <div class="inputs__item">
                 <label for="place-category">Категория:</label>
-                <select id="place-category">
-                  <option value="">Бар</option>
-                </select>
+                <div class="select-container">
+                  <select id="place-category">
+                    <option value="">Бар</option>
+                  </select>
+                </div>
               </div>
               <div class="inputs__item upload-file">
                 <label class="upload-file__label" for="place-photo">
@@ -49,40 +39,33 @@
                   <input class="upload-file__input" type="file" id="place-photo" accept="image/jpeg,image/jpg,image/png">
                 </label>
                 <div class="upload-file__preview">
-                  <img src="./assets/img/uploadphoto.jpg" alt="image">
+                  <img src="./../assets/img/uploadphoto.jpg" alt="image">
                 </div>
               </div>
             </div>
           </div>
           <div class="big-map">
             <div class="big-map__label">Укажите место на карте:</div>
-            <div class="big-map__img" style="background-image: url('../static/bigmap.png');background-position: center">
+            <div class="big-map__img" style="background-image: url('../../static/image/bigmap.png');background-position: center">
 
             </div>
           </div>
         </div>
       </div>
     </main>
-    <footer class="footer">
-      <div class="wrapper">
-        <p class="footer__copyright">SimborSoft</p>
-      </div>
-    </footer>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    data: function () {
-      return{
-        count: 0,
-      }
-    },
-    methods:{
-      plusOne : function () {
-        console.log(this.count++);
-      }
+    import Footer from "../components/Footer";
+    import Header from "../components/Header";
+    export default {
+        name: "main",
+      components: {Header, Footer}
     }
-  }
 </script>
+
+<style lang="sass" scoped>
+
+</style>
