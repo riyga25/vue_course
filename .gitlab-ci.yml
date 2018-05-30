@@ -1,0 +1,19 @@
+stages:
+  - build_deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build_deploy
+  only:
+    - master
+  script:
+    - PROJECT_NAMESPACE_SLUG=$(echo $CI_PROJECT_NAMESPACE | tr "." -)
+    - DEPLOY_PROJECT_NAME="$PROJECT_NAMESPACE_SLUG-$CI_PROJECT_NAME"
+    - echo $DEPLOY_PROJECT_NAME
+    - npm i
+    - npm run build
+    - rm -rf /var/www/subdomain/$DEPLOY_PROJECT_NAME
+    - rsync --recursive dist/* /var/www/subdomain/$DEPLOY_PROJECT_NAME
