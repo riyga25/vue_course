@@ -21,34 +21,22 @@
 <script>
     export default {
       name: "Stars",
+      props : ['value','disabled'],
       data : function () {
         return{
           ratings: [1,2,3,4,5],
-          temp_value : null
+          temp_value : null,
+          name : 'rating'
         }
-      },
-      props: {
-        'name': String,
-        'value': null,
-        'id': String,
-        'disabled': Boolean,
-        'required': Boolean
       },
       methods:{
         star_over: function(index) {
           if (!this.disabled) {
             this.temp_value = this.value;
-            return this.value = this.index;
+            return this.value = index;
           }
-
         },
-
-        /*
-         * Behaviour of the stars on mouseout.
-         */
         star_out: function() {
-          var self = this;
-
           if (!this.disabled) {
             return this.value = this.temp_value;
           }
@@ -64,38 +52,38 @@
 </script>
 
 <style lang="scss" scoped>
-.star-rating{
-
-  &__checkbox{
+  %visually-hidden {
     position: absolute;
     overflow: hidden;
     clip: rect(0 0 0 0);
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
+    height: 1px; width: 1px;
+    margin: -1px; padding: 0; border: 0;
   }
-  &__star{
-    display: inline-block;
-    padding: 3px;
-    vertical-align: middle;
-    line-height: 1;
-    font-size: 1.5em;
-    color: #ABABAB;
-    transition: color .2s ease-out;
 
-    &:hover {
+  .star-rating {
+
+    &__star {
+      display: inline-block;
+      padding: 3px;
+      vertical-align: middle;
+      line-height: 1;
+      font-size: 1.5em;
+      color: #ABABAB;
+      transition: color .2s ease-out;
       cursor: pointer;
+
+      &.active{
+        color: #FFD700;
+      }
+
+      &.disabled:hover {
+        cursor: default;
+      }
     }
 
-    &.active {
-      color: #FFD700;
-    }
-
-    &.disabled:hover {
-      cursor: default;
+    &__checkbox {
+      @extend %visually-hidden;
     }
   }
-}
+
 </style>

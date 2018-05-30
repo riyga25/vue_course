@@ -8,7 +8,7 @@
             <Range></Range>
           </div>
           <div class="preheader__stars">
-            <Stars></Stars>
+            <Stars value="3"> </Stars>
           </div>
           <div class="preheader__select">
 
