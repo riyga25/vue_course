@@ -26,7 +26,7 @@
   // честно стырено с codepen :)
   function getClientX (e) {
     let clientX = e.clientX;
-    if (e.type == 'touchmove' || e.type == 'touchstart') {
+    if (e.type === 'touchmove' || e.type === 'touchstart') {
       clientX = e.changedTouches[0].clientX;
     }
     return +clientX
@@ -39,11 +39,11 @@
         name: "Range",
         data () {
           return {
-            rangeMin: 1,
+            rangeMin: 0,
             rangeMax: 100,
             rangeBarWidth: 0,
-            fromKnobPosition: 20,
-            toKnobPosition: 70,
+            fromKnobPosition: Number,
+            toKnobPosition: Number,
             mouseDownClientX: 0,
             mouseDownFromPosition: 0,
             mouseDownToPosition: 0,
@@ -66,14 +66,20 @@
           },
           fromKnobValue () {
             var rangeFrom = Math.ceil(this.fromKnobPosition * this.rangeValueOneProp) + +this.rangeMin;
-            this.$emit('fromKnobValue',rangeFrom);
+            this.fromKnobPosition = rangeFrom;
+            this.$store.commit('rangeMinUpdate',{count: this.fromKnobPosition});
             return rangeFrom;
           },
           toKnobValue () {
             var rangeTo = Math.ceil(this.toKnobPosition * this.rangeValueOneProp) + +this.rangeMin;
-            this.$emit('toKnobValue',rangeTo);
+            this.toKnobPosition = rangeTo;
+            this.$store.commit('rangeMaxUpdate',{count: this.toKnobPosition});
             return rangeTo;
           }
+        },
+        beforeMount(){
+          this.fromKnobPosition = this.$store.state.filters.rangeMin;
+          this.toKnobPosition = this.$store.state.filters.rangeMax;
         },
         mounted () {
           this.$nextTick(() => {
@@ -85,6 +91,7 @@
             dragCover = this.$refs.dragCover;
 
             this.rangeBarWidth = rangeBar.clientWidth;
+
 
             // add listener
             window.addEventListener('resize', this.onWindowResize);

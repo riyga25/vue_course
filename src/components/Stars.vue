@@ -7,13 +7,13 @@
       @mouseover="star_over(rating)"
       @mouseout="star_out"
     >
-      ★
-      <input class="star-rating__checkbox" type="radio"
-        :value="rating"
-        v-model="value"
-        :disabled="disabled"
-        :name="name"
-      >
+    ★
+    <input class="star-rating__checkbox" type="radio"
+      :inValue="rating"
+      v-model="value"
+      :disabled="disabled"
+      :name="name"
+    >
     </label>
   </div>
 </template>
@@ -21,12 +21,13 @@
 <script>
     export default {
       name: "Stars",
-      props : ['value','disabled'],
+      props : ['inValue','disabled'],
       data : function () {
         return{
           ratings: [1,2,3,4,5],
           temp_value : null,
-          name : 'rating'
+          name : 'rating',
+          value : this.inValue,
         }
       },
       methods:{
@@ -44,7 +45,8 @@
         set: function(value) {
           if (!this.disabled) {
             this.temp_value = value;
-            return this.value = value;
+            this.value = value;
+            this.$store.commit('ratingUpdate',{rating:this.value})
           }
         }
       }
@@ -64,16 +66,17 @@
 
     &__star {
       display: inline-block;
-      padding: 3px;
+      padding: 1px;
       vertical-align: middle;
-      line-height: 1;
-      font-size: 1.5em;
-      color: #ABABAB;
+      letter-spacing: -3px;
+      line-height: 13px;
+      font-size: 20px;
+      color: #BDBDBD;
       transition: color .2s ease-out;
       cursor: pointer;
 
       &.active{
-        color: #FFD700;
+        color: #FF3333;
       }
 
       &.disabled:hover {

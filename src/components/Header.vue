@@ -1,25 +1,33 @@
 <template>
       <header class="header">
         <div class="wrapper header__container">
-          <a href="/" class="header__left">
-            Прогуляй стипендию!
-          </a>
+          <router-link class="header__left" to="/">Прогуляй стипендию!</router-link>
           <div class="header__center">
-            Размер стипендии <input type="text" class="h-money" value="2000"> ₽
+            Размер стипендии <input type="text" class="h-money" @keyup="changeMoney" :value="money"> ₽
           </div>
-          <div class="header__right">
+          <router-link to="/edit" class="header__right">
             Добавить место
-          </div>
+          </router-link>
         </div>
       </header>
 </template>
 
 <script>
     export default {
-        name: "Header"
+      name: "Header",
+      data(){
+        return {
+          money: Number
+        }
+      },
+      methods:{
+        changeMoney(self){
+          this.money = self.target.value;
+          this.$store.commit('howmachUpdate',{money: this.money});
+        }
+      },
+      beforeMount() {
+        this.money = this.$store.state.filters.howMach;
+      }
     }
 </script>
-
-<style lang="sass" scoped>
-
-</style>
