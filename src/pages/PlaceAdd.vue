@@ -12,23 +12,19 @@
           <div class="inputs__list">
             <div class="inputs__item">
               <label for="place-name">Название</label>
-              <input type="text" id="place-name" placeholder="Введите название места">
+              <input required type="text" id="place-name" v-model="place.name" placeholder="Введите название места">
             </div>
             <div class="inputs__item">
               <label for="place-address">Адрес:</label>
-              <input type="text" id="place-address" placeholder="Введите точный адрес места">
+              <input required type="text" id="place-address" v-model="place.address" placeholder="Введите точный адрес места">
             </div>
             <div class="inputs__item">
               <label for="place-average">Средний чек:</label>
-              <input type="text" id="place-average" placeholder="Введите размер среднего чека, руб.">
+              <input required type="text" id="place-average" v-model="place.averageCheck" placeholder="Введите размер среднего чека, руб.">
             </div>
             <div class="inputs__item">
-              <label for="place-category">Категория:</label>
-              <div class="select-container">
-                <select id="place-category">
-                  <option value="">Бар</option>
-                </select>
-              </div>
+              <label>Категория:</label>
+              <Select @category="getCategory"></Select>
             </div>
             <div class="inputs__item upload-file">
               <label class="upload-file__label" for="place-photo">
@@ -44,17 +40,41 @@
         </div>
         <div class="big-map">
           <div class="big-map__label">Укажите место на карте:</div>
-          <div class="big-map__img" style="background-image: url('../../static/image/bigmap.png');background-position: center">
-
+          <div class="big-map__img">
+            <Map></Map>
           </div>
         </div>
       </div>
+      <a @click="addPlace(place)" class="add-place">Добавить место</a>
     </div>
   </main>
 </template>
 
 <script>
+    import Map from "../components/Map";
+    import Select from "../components/Select";
     export default {
-        name: "Detail",
+      name: "Detail",
+      components: {Select, Map},
+      data(){
+          return{
+            place:{
+              name: '',
+              address:'',
+              averageCheck:'',
+              category:'',
+              coords:''
+            }
+          }
+      },
+      methods:{
+        getCategory(category){
+          this.place.category = category;
+        },
+
+        addPlace(place){
+          this.$store.dispatch('addPlace', place);
+        }
+      },
     }
 </script>

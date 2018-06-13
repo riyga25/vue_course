@@ -24,13 +24,13 @@ const store = new Vuex.Store({
         averageCheck_percent: '',
         averageRating: '',
         address: 'ул. Улица, 1a',
+        coords:[54.297565, 48.371761],
         review: [
           {
             id: 3,
             rating: 3.5,
             author: 'user_name_111',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut \
-          labore et dolore magna aliqua.',
+            text: 'Были с семьей в Ульяновске, по отзывам пошли в Gonzo, и не пожалели!!! Стейки улёт, соотношение цены и качества - просто супер!!! Очень хороший официант был у нас, человек своего дела, все показал, рассказал, порекомендовал!!! По его рекомендации попробовали очень вкусные салаты, просто супер!!! Пиво вкусное!!! В общем, из всех заведений, что посетили за время нашей поездки, это оказалось лучшее!!!',
           },
           {
             id: 2,
@@ -52,6 +52,7 @@ const store = new Vuex.Store({
         averageCheck_percent: '',
         averageRating: '',
         address: 'ул. Улица, 12',
+        coords:[54.315233, 48.392704],
         review: [
           {
             id: 1,
@@ -86,7 +87,8 @@ const store = new Vuex.Store({
         averageCheck: 500,
         averageCheck_percent: '',
         averageRating: '',
-        address: 'ул. Улица, 17'
+        address: 'ул. Улица, 17',
+        coords:[54.305898, 48.396652],
       },
       {
         id: 3,
@@ -98,7 +100,8 @@ const store = new Vuex.Store({
         averageCheck: 1500,
         averageCheck_percent: '',
         averageRating: '',
-        address: 'ул. Улица, 1'
+        address: 'ул. Улица, 1',
+        coords:[54.328780, 48.393219],
       },
       {
         id: 2,
@@ -110,7 +113,8 @@ const store = new Vuex.Store({
         averageCheck: 1000,
         averageCheck_percent: '',
         averageRating: '',
-        address: 'ул. Улица, 2'
+        address: 'ул. Улица, 2',
+        coords:[54.327877, 48.477848],
       },
       {
         id: 1,
@@ -123,6 +127,7 @@ const store = new Vuex.Store({
         averageCheck_percent: '',
         averageRating: '',
         address: 'ул. Улица, 75',
+        coords:[54.347136, 48.550632],
         review: [
           {
             id: 1,
@@ -135,7 +140,11 @@ const store = new Vuex.Store({
       },
     ]
   },
-  actions: {},
+  actions: {
+    addPlace({commit}, place) {
+      commit('addPlace', place)
+    }
+  },
   mutations: {
     howmachUpdate(state,n){
       state.filters.howMach = n.money;
@@ -148,9 +157,16 @@ const store = new Vuex.Store({
     },
     ratingUpdate(state,n){
       state.filters.stars = n.rating;
+    },
+    addPlace(state,place){
+
+      state.places.push(place);
     }
   },
   getters: {
+    findPage : state => id =>{
+      return state.places.find(place => place.id === id)
+    },
     ratingFilter : state => {
       return state.places.filter(place => (place.averageRating >= state.filters.stars))
     },

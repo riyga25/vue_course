@@ -19,8 +19,8 @@
           Показано {{places.length}} из {{this.$store.state.places.length}} (очистить фильтры)
         </div>
         <div class="main-page">
-          <div class="main-page__map" style="background-image: url('../../static/image/bigmap.png');background-position: center">
-
+          <div class="main-page__map">
+            <Map :places="places"></Map>
           </div>
           <div class="main-page__places" v-if="places" >
             <div class="main-page__place m-place"
@@ -59,15 +59,16 @@
 <script>
     import Range from "../components/Range";
     import Stars from "../components/Stars";
+    import Map from "../components/Map";
 
     export default {
 
       name: "Home",
-      components: {Stars, Range},
+      components: {Map, Stars, Range},
 
       computed: {
         places() {
-          var places = this.$store.getters.checkFilter;
+          var places = this.$store.state.places;
           var filters = this.$store.state.filters;
 
           if(places){
