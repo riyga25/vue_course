@@ -133,7 +133,7 @@ const store = new Vuex.Store({
       commit('addPlace', place)
     },
     addReview({commit}, review) {
-      commit('addReview', review)
+      commit('addReview', review);
     }
   },
   mutations: {
@@ -150,10 +150,20 @@ const store = new Vuex.Store({
       state.filters.stars = n.rating;
     },
     addPlace(state,place){
+      place.id = state.places.length + 1;
       state.places.push(place);
     },
     addReview(state,review){
       let place = state.places.find(place => place.id === review.id);
+
+      if(place.review){
+        let reviewId = place.review.length + 1;
+        review.id = reviewId;
+      }
+      else{
+        place.review = [];
+        review.id = 1;
+      }
       place.review.push(review);
     }
   },

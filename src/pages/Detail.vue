@@ -64,11 +64,11 @@
           <div class="modal__inputs">
             <div class="inputs__item">
               <label>Имя:</label>
-              <input required type="text" v-model.lazy="modal.name" placeholder="Введите свое имя">
+              <input required type="text" v-model.lazy="modal.author" placeholder="Введите свое имя">
             </div>
             <div class="modal__textarea">
               <label>Текст отзыва</label>
-              <textarea v-model.lazy="modal.comment" required rows="5"></textarea>
+              <textarea v-model.lazy="modal.text" required rows="5"></textarea>
             </div>
           </div>
           <div class="modal__bottom">
@@ -93,9 +93,9 @@
         return{
           modalActive : false,
           modal:{
-            name: '',
-            comment: '',
-            stars: Number,
+            author: '',
+            text: '',
+            rating: Number,
             id: this.$route.params.id
           }
         }
@@ -117,7 +117,7 @@
           this.callModal();
         },
         getRating(rating){
-          this.modal.stars = rating;
+          this.modal.rating = rating;
         }
       }
     }

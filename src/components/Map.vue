@@ -29,8 +29,8 @@
 
         mapInit(dots){
           return () => {
-            let $myMap,
-              placemark;
+            let $myMap;
+            let placemark;
 
             $myMap = new ymaps.Map("map", {
               center: [54.316855, 48.402557],
@@ -38,28 +38,36 @@
               controls: ['zoomControl']
             });
 
+            let addMark = (coords) =>{
+              placemark = new ymaps.Placemark(coords);
+              $myMap.geoObjects.add(placemark);
+            };
+
             if(dots){
               if(dots.length){
                 dots.forEach(function (dot) {
-                  placemark = new ymaps.Placemark(dot.coords);
-                  $myMap.geoObjects.add(placemark);
+                  addMark(dot.coords);
                 })
               }
               else{
-                placemark = new ymaps.Placemark(dots.coords);
-                $myMap.geoObjects.add(placemark);
+                addMark(dots.coords);
               }
             }
 
             $myMap.events.add('click', (e) => {
-              this.place = e.get('coords');
+              $myMap.geoObjects.removeAll();
+
+              let coords = e.get('coords');
+              this.place = coords;
               this.sendCoords();
+
+              addMark(coords);
             });
           };
         },
         sendCoords(){
             this.$emit('coords',this.place);
-        }
+        },
       },
       mounted(){
         this.$nextTick(

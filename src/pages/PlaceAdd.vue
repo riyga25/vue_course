@@ -76,7 +76,8 @@
         },
         addPlace(place){
           this.$store.dispatch('addPlace', place);
+          this.$router.push('/');
         }
-      },
+      }
     }
 </script>
