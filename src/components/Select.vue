@@ -29,21 +29,19 @@
           }
         },
       methods:{
+        wtfCategory(){
+          var cat = this.category;
+          var options = this.options;
 
-          wtfCategory(){
-            var cat = this.category;
-            var options = this.options;
+          options.forEach(function (option) {
+            if(option.id === cat.id){
+              cat.name = option.name;
+            }
+            return;
+          });
 
-            options.forEach(function (option) {
-              if(option.id === cat.id){
-                cat.name = option.name;
-              }
-              return;
-            });
-
-            this.$emit('category',cat);
-          }
-
+          this.$emit('category',cat);
+        }
       }
     }
 </script>

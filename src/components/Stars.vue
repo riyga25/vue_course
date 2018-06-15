@@ -46,7 +46,8 @@
           if (!this.disabled) {
             this.temp_value = value;
             this.value = value;
-            this.$store.commit('ratingUpdate',{rating:this.value})
+            this.$store.commit('ratingUpdate',{rating:this.value});
+            this.$emit('rating',this.value);
           }
         }
       }

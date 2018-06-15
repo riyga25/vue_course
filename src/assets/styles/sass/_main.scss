@@ -328,7 +328,7 @@ input[type="file"]{
   }
 }
 .add-place{
-  background: #4296EA;
+  background: $blue;
   padding: 20px 0;
   display: block;
   text-align: center;
@@ -339,6 +339,97 @@ input[type="file"]{
   cursor: pointer;
 
   &:hover{
-    background: #0073e6;
+    background: $blue-dark;
   }
+}
+.modal{
+  width: 464px;
+  background: $white;
+  position: fixed;
+  z-index: 9999;
+  padding: 25px 35px 35px;
+  top: 88px;
+  right: 50%;
+  transform: translateX(50%);
+
+  &__title{
+    font-weight: bold;
+    line-height: 35px;
+    font-size: 22px;
+  }
+  &__close{
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    right: 32px;
+    top: 33px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+
+    &::before,
+    &::after{
+      position: absolute;
+      content: '';
+      height: 1px;
+      width: 20px;
+      background: $gray2;
+      top: 11px;
+    }
+    &::before{
+      transform: rotate(45deg);
+    }
+    &::after{
+      transform: rotate(-45deg);
+    }
+    &:hover{
+      transform: rotate(180deg) translateX(3px);
+    }
+  }
+  &__send{
+    background: $blue-dark;
+    cursor: pointer;
+    color: $white;
+    padding: 12px;
+    width: 192px;
+    text-align: center;
+    transition: all 0.3s;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &:hover{
+      background: $blue;
+    }
+  }
+  &__bottom{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+  &__inputs{
+    margin-top: 23px;
+  }
+  &__textarea{
+    margin-top: 24px;
+  }
+  input{
+    background: $white;
+  }
+  textarea{
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid $gray2;
+    margin-top: 8px;
+  }
+  .gray-text{
+    margin-bottom: 8px;
+  }
+}
+.modal-back{
+  background: rgba(0,0,0,0.6);
+  z-index: 9000;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
 }

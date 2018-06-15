@@ -1,6 +1,6 @@
 <template>
     <div>
-        404 blya
+        404 короч
     </div>
 </template>
 

@@ -21,8 +21,6 @@ const store = new Vuex.Store({
           id: 2
         },
         averageCheck: 2000,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 1a',
         coords:[54.297565, 48.371761],
         review: [
@@ -49,8 +47,6 @@ const store = new Vuex.Store({
           id: 1
         },
         averageCheck: 3000,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 12',
         coords:[54.315233, 48.392704],
         review: [
@@ -85,8 +81,6 @@ const store = new Vuex.Store({
           id: 2
         },
         averageCheck: 500,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 17',
         coords:[54.305898, 48.396652],
       },
@@ -98,8 +92,6 @@ const store = new Vuex.Store({
           id: 1
         },
         averageCheck: 1500,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 1',
         coords:[54.328780, 48.393219],
       },
@@ -111,8 +103,6 @@ const store = new Vuex.Store({
           id: 1
         },
         averageCheck: 1000,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 2',
         coords:[54.327877, 48.477848],
       },
@@ -124,8 +114,6 @@ const store = new Vuex.Store({
           id: 3
         },
         averageCheck: 800,
-        averageCheck_percent: '',
-        averageRating: '',
         address: 'ул. Улица, 75',
         coords:[54.347136, 48.550632],
         review: [
@@ -143,6 +131,9 @@ const store = new Vuex.Store({
   actions: {
     addPlace({commit}, place) {
       commit('addPlace', place)
+    },
+    addReview({commit}, review) {
+      commit('addReview', review)
     }
   },
   mutations: {
@@ -159,21 +150,17 @@ const store = new Vuex.Store({
       state.filters.stars = n.rating;
     },
     addPlace(state,place){
-
       state.places.push(place);
+    },
+    addReview(state,review){
+      let place = state.places.find(place => place.id === review.id);
+      place.review.push(review);
     }
   },
   getters: {
     findPage : state => id =>{
       return state.places.find(place => place.id === id)
-    },
-    ratingFilter : state => {
-      return state.places.filter(place => (place.averageRating >= state.filters.stars))
-    },
-    checkFilter : state => {
-      return state.places.filter(place => ( place.averageCheck_percent < state.filters.rangeMax))
     }
-
   },
   modules: {}
 });

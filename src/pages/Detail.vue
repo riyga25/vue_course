@@ -35,7 +35,7 @@
               <div class="m-detail__count">
                 Отзывы: <span class="gray-text" v-if="place.review" >({{place.review.length}})</span>
               </div>
-              <div class="m-detail__btn">Написать отзыв</div>
+              <div class="m-detail__btn" @click="callModal">Написать отзыв</div>
             </div>
             <div class="m-detail__list" v-if="place.review">
               <div class="m-detail__item detail-item" v-for="review in place.review" :key="place.review.id">
@@ -56,6 +56,30 @@
         </div>
       </div>
     </div>
+
+    <div v-if="modalActive" class="modal-back">
+        <div class="modal">
+          <div class="modal__title">Оставить отзыв</div>
+          <div class="modal__close" @click="callModal"></div>
+          <div class="modal__inputs">
+            <div class="inputs__item">
+              <label>Имя:</label>
+              <input required type="text" v-model.lazy="modal.name" placeholder="Введите свое имя">
+            </div>
+            <div class="modal__textarea">
+              <label>Текст отзыва</label>
+              <textarea v-model.lazy="modal.comment" required rows="5"></textarea>
+            </div>
+          </div>
+          <div class="modal__bottom">
+            <div class="modal__stars">
+              <div class="gray-text">Оцените заведение</div>
+              <Stars @rating="getRating"></Stars>
+            </div>
+            <div class="modal__send" @click="addReview(modal)">Отправить отзыв</div>
+          </div>
+        </div>
+    </div>
   </main>
 </template>
 
@@ -65,12 +89,35 @@
     export default {
       name: "Detail",
       components: {Map, Stars},
+      data(){
+        return{
+          modalActive : false,
+          modal:{
+            name: '',
+            comment: '',
+            stars: Number,
+            id: this.$route.params.id
+          }
+        }
+      },
       computed:{
         place(){
           var placeID = this.$route.params.id;
           var place = this.$store.getters.findPage(placeID);
 
           return place;
+        }
+      },
+      methods:{
+        callModal(){
+          this.modalActive = !this.modalActive;
+        },
+        addReview(modal){
+          this.$store.dispatch('addReview',modal);
+          this.callModal();
+        },
+        getRating(rating){
+          this.modal.stars = rating;
         }
       }
     }

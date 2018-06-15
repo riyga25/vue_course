@@ -9,7 +9,7 @@
       data(){
         return{
           dots: this.places,
-          place: Array
+          place: []
         }
       },
       methods:{
@@ -22,15 +22,15 @@
           yaMapScript.setAttribute('defer','');
           document.body.appendChild(yaMapScript);
           yaMapScript.onload = () =>{
-            window.ymaps.ready(this.mapInit(this.dots,this.place));
+            window.ymaps.ready(this.mapInit(this.dots));
           };
           yaMapScript.onerror = (err)=> handleError(err);
         },
 
-        mapInit(dots,place){
-          return function () {
-            var $myMap,
-                placemark;
+        mapInit(dots){
+          let f = () => {
+            let $myMap,
+              placemark;
 
             $myMap = new ymaps.Map("map", {
               center: [54.316855, 48.402557],
@@ -52,11 +52,11 @@
             }
 
             $myMap.events.add('click', function (e) {
-              let coords = e.get('coords');
-              console.log(coords);
-              this.place = coords;
+              this.place = e.get('coords');
+              // console.log(coords);
             });
           };
+          return f;
         },
       },
       mounted(){
