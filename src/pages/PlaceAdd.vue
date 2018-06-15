@@ -41,7 +41,7 @@
         <div class="big-map">
           <div class="big-map__label">Укажите место на карте:</div>
           <div class="big-map__img">
-            <Map></Map>
+            <Map @coords="getCoords"></Map>
           </div>
         </div>
       </div>
@@ -71,7 +71,9 @@
         getCategory(category){
           this.place.category = category;
         },
-
+        getCoords(coords){
+            this.place.coords = coords;
+        },
         addPlace(place){
           this.$store.dispatch('addPlace', place);
         }
