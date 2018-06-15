@@ -27,8 +27,8 @@
           yaMapScript.onerror = (err)=> handleError(err);
         },
 
-        mapInit(dots){
-          let f = () => {
+        mapInit:(dots) => {
+          return () => {
             let $myMap,
               placemark;
 
@@ -53,10 +53,8 @@
 
             $myMap.events.add('click', function (e) {
               this.place = e.get('coords');
-              // console.log(coords);
             });
           };
-          return f;
         },
       },
       mounted(){
