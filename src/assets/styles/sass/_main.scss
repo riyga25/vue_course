@@ -75,7 +75,6 @@ input[type="file"]{
 .main-info .wrapper{
   padding: 40px 0;
 }
-
 .h-money{
   margin: 0 7px;
   background: $blue-dark;
@@ -119,6 +118,9 @@ input[type="file"]{
   &__range{
     width: 816px;
   }
+  &__select{
+    width: 190px;
+  }
 }
 .p-detail{
   margin-top: 18px;
@@ -151,6 +153,11 @@ input[type="file"]{
     text-align: center;
     margin-left: 16px;
     cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover{
+      background: $blue;
+    }
   }
   &__head{
     display: flex;
@@ -432,4 +439,33 @@ input[type="file"]{
   width: 100vw;
   height: 100vh;
   top: 0;
+}
+.home-page{
+  .preheader .wrapper{
+    display: flex;
+    justify-content: space-between;
+
+    .star-rating{
+      margin-top: 13px;
+    }
+  }
+}
+.edit-save{
+  background: $blue-dark;
+  color: $white;
+  padding: 5px 10px;
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 4px;
+
+  &:hover{
+    background: $blue;
+  }
+}
+.edit-input{
+  max-width: 60%;
+  height: 26px;
 }

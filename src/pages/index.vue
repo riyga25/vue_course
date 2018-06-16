@@ -1,7 +1,7 @@
 <template>
     <div class="template">
       <Header></Header>
-      <transition :name="transitionType">
+      <transition :name="transitionType" mode="out-in">
         <router-view></router-view>
       </transition>
       <Footer></Footer>
@@ -32,16 +32,18 @@
   .slide-left-enter, .slide-right-leave-to {
     -webkit-transform: translate(40px, 0);
     transform: translate(40px, 0);
+    opacity: 0;
   }
   .slide-left-leave-to, .slide-right-enter {
     -webkit-transform: translate(-40px, 0);
     transform: translate(-40px, 0);
+    opacity: 0;
   }
   .slide-right-enter-active,
   .slide-left-enter-active,
   .slide-right-leave-active,
   .slide-left-leave-active {
-    transition: all .6s ease-out;
+    transition: all .3s ease-out;
   }
 
 

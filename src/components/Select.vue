@@ -1,6 +1,7 @@
 <template>
   <div class="select-container">
     <select name="category" id="place-category" v-model="category.id" v-on:change="wtfCategory">
+      <option value=""></option>
       <option v-for="option in options" :key="option.id" :value="option.id">{{option.name}}</option>
     </select>
   </div>

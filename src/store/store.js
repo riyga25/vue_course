@@ -132,9 +132,15 @@ const store = new Vuex.Store({
     addPlace({commit}, place) {
       commit('addPlace', place)
     },
+    deletePlace({commit}, place) {
+      commit('deletePlace', place);
+    },
     addReview({commit}, review) {
       commit('addReview', review);
-    }
+    },
+    updatePlace({commit}, place) {
+      commit('updatePlace', place);
+    },
   },
   mutations: {
     howmachUpdate(state,n){
@@ -152,6 +158,16 @@ const store = new Vuex.Store({
     addPlace(state,place){
       place.id = state.places.length + 1;
       state.places.push(place);
+    },
+    deletePlace(state,placeID){
+      let index = state.places.findIndex(place => place.id === placeID);
+      if (index > -1) {
+        state.places.splice(index, 1);
+      }
+    },
+    updatePlace(state,item){
+      let thisPlace = state.places.find(place => place.id === item.id);
+      thisPlace = item;
     },
     addReview(state,review){
       let place = state.places.find(place => place.id === review.id);

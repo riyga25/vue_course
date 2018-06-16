@@ -41,7 +41,7 @@
         <div class="big-map">
           <div class="big-map__label">Укажите место на карте:</div>
           <div class="big-map__img">
-            <Map @coords="getCoords"></Map>
+            <Map :placeAdd="true" @coords="getCoords"></Map>
           </div>
         </div>
       </div>

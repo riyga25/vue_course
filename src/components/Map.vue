@@ -5,7 +5,7 @@
 <script>
     export default {
       name: "Map",
-      props: ['places'],
+      props: ['places','placeAdd'],
       data(){
         return{
           dots: this.places,
@@ -39,32 +39,38 @@
             });
 
             let addMark = (coords) =>{
-              placemark = new ymaps.Placemark(coords);
+              placemark = new ymaps.Placemark(coords.coords,
+                {iconCaption: coords.name});
               $myMap.geoObjects.add(placemark);
             };
 
             if(dots){
               if(dots.length){
                 dots.forEach(function (dot) {
-                  addMark(dot.coords);
+                  addMark(dot);
                 })
               }
               else{
-                addMark(dots.coords);
+                addMark(dots);
               }
             }
 
-            $myMap.events.add('click', (e) => {
-              $myMap.geoObjects.removeAll();
+            if(this.placeAdd){
+              $myMap.events.add('click', (e) => {
+                $myMap.geoObjects.removeAll();
 
-              let coords = e.get('coords');
-              this.place = coords;
-              this.sendCoords();
+                let coords = e.get('coords');
+                this.place = coords;
+                this.sendCoords();
 
-              addMark(coords);
-            });
+                placemark = new ymaps.Placemark(coords);
+                $myMap.geoObjects.add(placemark);
+              });
+            }
+
           };
         },
+
         sendCoords(){
             this.$emit('coords',this.place);
         },
