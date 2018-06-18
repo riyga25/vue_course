@@ -12,7 +12,7 @@
     import Header from "../components/Header";
     import Footer from "../components/Footer";
     export default {
-        name: "index",
+      name: "index",
       components: {Footer, Header},
       data: function () {
           return{
@@ -25,6 +25,12 @@
           const fromDepth = from.path.split('/').length;
           this.transitionType = toDepth < fromDepth ? 'slide-right' : 'slide-left'
         }
+      },
+      created(){
+        this.$nextTick(()=> {
+            this.$store.dispatch('loadData')
+          }
+        )
       }
     }
 </script>

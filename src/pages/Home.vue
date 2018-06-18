@@ -136,9 +136,6 @@
           item.editing = !item.editing;
           this.editPlace = {};
         }
-      },
-      created(){
-        this.$store.dispatch('loadData');
       }
     }
 </script>

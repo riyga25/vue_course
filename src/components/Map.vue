@@ -39,7 +39,8 @@
             });
 
             let addMark = (coords) =>{
-              placemark = new ymaps.Placemark(coords.coords,
+              console.log(coords);
+              placemark = new ymaps.Placemark([coords.lat, coords.lon],
                 {iconCaption: coords.name});
               $myMap.geoObjects.add(placemark);
             };

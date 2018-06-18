@@ -4,16 +4,8 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 
-// axios.defaults.baseURL = 'https://courses-frontend.simbirsoft1.com/api/graphql?';
-// axios.defaults.headers.common['Authorization'] = 'Basic Y291cnNlcy1mcm9udGVuZDpybEdFT29WUndL';
+axios.defaults.headers.common['Authorization'] = 'Basic Y291cnNlcy1mcm9udGVuZDpybEdFT29WUndL';
 
-const instance = axios.create({
-  baseURL: 'https://courses-frontend.simbirsoft1.com/api/graphql?',
-  timeout: 1000,
-  headers: {
-    'Authorization': 'Basic Y291cnNlcy1mcm9udGVuZDpybEdFT29WUndL'
-  }
-});
 
 const store = new Vuex.Store({
   state: {
@@ -28,12 +20,15 @@ const store = new Vuex.Store({
   },
   actions: {
     loadData({commit}){
-      instance.post().then(
+      axios.post(
+        '/api/graphql',
+        {query: `{entities {id name image address averageCheck rating lat lon category {id, name} reviews {id, text, author, rating}}
+        }`}).then(
         response => {
-          commit('loadData', response.data)
+          commit('loadData', response.data.data.entities);
         }
       ).catch( e =>
-        console.log('error-> '+e)
+        console.log('get places error. . . '+e)
       )
     },
     addPlace({commit}, place) {
@@ -51,7 +46,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     loadData(state,places){
-      console.log(places);
+      state.places = places;
     },
     howmachUpdate(state,n){
       state.filters.howMach = n.money;
