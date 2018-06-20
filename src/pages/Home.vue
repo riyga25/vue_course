@@ -11,7 +11,7 @@
         </div>
         <div class="preheader__select">
           <div class="gray-text">Где:</div>
-          <Select></Select>
+          <Select @category="getCategory"></Select>
         </div>
       </div>
     </div>
@@ -42,11 +42,11 @@
               <router-link v-if="!place.editing" class="m-place__title" :to="{ name: 'place', params: { id: place.id }}">{{place.name}}</router-link>
               <input class="edit-input" type="text" v-model="editPlace.name" v-if="place.editing">
               <div v-if="!place.editing" class="m-place__rating">
-                <Stars :inValue="place.averageRating" :disabled="true"></Stars>
+                <Stars :inValue="place.rating" :disabled="true"></Stars>
               </div>
               <div v-if="!place.editing" class="m-place__reviews gray-text">
-                <span v-if="place.review">
-                  (Отзывов: {{place.review.length}})
+                <span v-if="place.reviews">
+                  (Отзывов: {{place.reviews.length}})
                 </span>
               </div>
               <div v-if="!place.editing" class="m-place__avr">
@@ -98,17 +98,6 @@
                 this.$set(item,'averageCheck_percent',result);
               }
 
-              if(item.review){
-                var rating = 0;
-                var count = item.review.length;
-                item.review.forEach((reviews) =>{
-                  rating += reviews.rating;
-                });
-                var avr = Math.round(rating / count);
-
-                this.$set(item,'averageRating',avr);
-              }
-
               this.$set(item,'editing',false);
               this.$set(item,'active',false);
             })
@@ -118,6 +107,9 @@
       },
       methods:{
         addActive(item){
+          this.places.forEach((place)=>{
+            place.active = false;
+          });
           item.active = !item.active;
         },
         deleteItem(item){
@@ -135,6 +127,9 @@
           this.$store.dispatch('updatePlace',this.editPlace);
           item.editing = !item.editing;
           this.editPlace = {};
+        },
+        getCategory(category){
+          this.$store.commit('categoryUpdate',category.id);
         }
       }
     }

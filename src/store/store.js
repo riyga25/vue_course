@@ -10,13 +10,15 @@ axios.defaults.headers.common['Authorization'] = 'Basic Y291cnNlcy1mcm9udGVuZDpy
 const store = new Vuex.Store({
   state: {
     filters:{
-      stars : 4,
+      stars : 0,
       place : null,
-      rangeMin : 20,
-      rangeMax : 70,
-      howMach : 2000
+      rangeMin : 0,
+      rangeMax : 100,
+      howMach : 2000,
+      category : 'all'
     },
-    places :[]
+    places :[],
+    categories :[]
   },
   actions: {
     loadData({commit}){
@@ -30,6 +32,17 @@ const store = new Vuex.Store({
       ).catch( e =>
         console.log('get places error. . . '+e)
       )
+    },
+    loadCategories({commit}){
+      axios.post(
+        'api/graphql',
+        {query: `{categories{id name}}`}).then(
+          response => {
+            commit('loadCategories',response.data.data.categories);
+          }
+        ).catch( e =>
+          console.log('get categories error. . . '+e)
+        )
     },
     addPlace({commit}, place) {
       commit('addPlace', place)
@@ -48,6 +61,12 @@ const store = new Vuex.Store({
     loadData(state,places){
       state.places = places;
     },
+    loadCategories(state,categories){
+      state.categories = categories;
+    },
+    categoryUpdate(state,category){
+      state.filters.category = category;
+    },
     howmachUpdate(state,n){
       state.filters.howMach = n.money;
     },
@@ -61,7 +80,7 @@ const store = new Vuex.Store({
       state.filters.stars = n.rating;
     },
     addPlace(state,place){
-      place.id = state.places.length + 1;
+      place.id = state.places.length + 101;
       state.places.push(place);
     },
     deletePlace(state,placeID){
@@ -77,20 +96,68 @@ const store = new Vuex.Store({
     addReview(state,review){
       let place = state.places.find(place => place.id === review.id);
 
-      if(place.review){
-        let reviewId = place.review.length + 1;
+      if(place.reviews){
+        let reviewId = place.reviews.length + 101;
         review.id = reviewId;
       }
       else{
-        place.review = [];
-        review.id = 1;
+        place.reviews = [];
+        review.id = 100;
       }
-      place.review.push(review);
+      place.reviews.push(review);
     }
   },
   getters: {
     findPage : state => id =>{
       return state.places.find(place => place.id === id)
+    },
+    filterRange:(state)=>{
+      let count = state.filters.howMach;
+      let maxNum = state.filters.rangeMax;
+      let minNum = state.filters.rangeMin;
+      let places = [];
+
+      state.places.forEach((place)=>{
+        let check = place.averageCheck;
+
+        if(check/(count / 100) > minNum && check/(count / 100) < maxNum){
+          places.push(place);
+        }
+      });
+
+      return places;
+    },
+    filterCategory:(state)=>{
+      let places = [];
+
+      if(state.filters.category != 'all'){
+        state.places.forEach((place)=>{
+          if(place.category.id === state.filters.category){
+            places.push(place);
+          }
+        });
+      }
+      else{
+        places = state.places;
+      }
+
+      return places;
+    },
+    filterStars:(state)=>{
+      let places = [];
+
+      if(state.filters.stars != 0){
+        state.places.forEach((place)=>{
+          if(place.rating >= state.filters.stars || place.rating === 0){
+            places.push(place);
+          }
+        });
+      }
+      else{
+        places = state.places;
+      }
+
+      return places;
     }
   },
   modules: {}

@@ -183,6 +183,20 @@ input[type="file"]{
     margin-left: 15px;
     min-width: 838px;
   }
+  &__img{
+    height: 150px;
+    overflow: hidden;
+    margin: 15px 0;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    padding: 8px;
+
+    img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
 }
 .detail-item{
 
@@ -270,7 +284,7 @@ input[type="file"]{
     border: 1px solid #E0E0E0;
   }
   &__places{
-    margin-left: 20px;
+    padding-left: 23px;
     height: 624px;
     overflow: auto;
   }
@@ -282,6 +296,8 @@ input[type="file"]{
   margin-bottom: 18px;
   position: relative;
   border: 1px solid #E0E0E0;
+  box-sizing: border-box;
+  transition: all 0.3s;
 
   &__title{
     font-size: 18px;
@@ -315,6 +331,8 @@ input[type="file"]{
     transition: all 0.4s;
   }
   &:hover{
+    border: 1px solid #bdbdbd;
+
     .m-place__hidden{
       opacity: 1;
     }
@@ -323,14 +341,20 @@ input[type="file"]{
     display: inline-block;
   }
   &.active{
-    &::before{
+    &::before,
+    &::after{
       content: '';
+      transition: all 0.3s;
       position: absolute;
       left: -24px;
-      top: 24px;
+      top: 29px;
       border-style: solid;
       border-width: 24px 24px 24px 0;
       border-color: transparent #ffffff transparent transparent;
+    }
+    &::before{
+      border-width: 25px 24px 25px 0;
+      border-color: transparent #E0E0E0 transparent transparent;
     }
   }
 }

@@ -6,7 +6,7 @@
         <div class="p-detail">
           <div class="p-detail__name">{{place.name}}</div>
           <div class="p-detail__rating">
-            <Stars :inValue="place.averageRating" :disabled="true"></Stars>
+            <Stars :inValue="place.rating" :disabled="true"></Stars>
           </div>
           <div class="p-detail__address">
             <div class="gray-text">{{place.category.name}},</div>
@@ -21,11 +21,13 @@
           <div class="m-detail__left">
             <div class="m-detail__bg"></div>
             <div class="m-detail__info">
-              <span class="text-gray">Средний чек</span> {{place.averageCheck}} <br>
+              <span class="text-gray">Средний чек</span> {{place.averageCheck}} ₽<br>
               <span class="gray-text">Здесь можно прогулять</span> <br>
-              {{place.averageCheck_percent}}% стипендии
+              {{checkAvg}} % стипендии
             </div>
-            <div class="m-detail__img"></div>
+            <div class="m-detail__img" v-if="place.image">
+              <img :src="place.image" alt="">
+            </div>
             <div class="m-detail__map">
               <Map :places="place"></Map>
             </div>
@@ -33,12 +35,12 @@
           <div class="m-detail__right">
             <div class="m-detail__head">
               <div class="m-detail__count">
-                Отзывы: <span class="gray-text" v-if="place.review" >({{place.review.length}})</span>
+                Отзывы: <span class="gray-text" v-if="place.reviews" >({{place.reviews.length}})</span>
               </div>
               <div class="m-detail__btn" @click="callModal">Написать отзыв</div>
             </div>
-            <div class="m-detail__list" v-if="place.review">
-              <div class="m-detail__item detail-item" v-for="review in place.review" :key="place.review.id">
+            <div class="m-detail__list" v-if="place.reviews">
+              <div class="m-detail__item detail-item" v-for="review in place.reviews" :key="place.reviews.id">
                 <div class="detail-item__head">
                   <div class="detail-item__name gray-text">
                     {{review.author}}
@@ -91,6 +93,7 @@
       components: {Map, Stars},
       data(){
         return{
+          place: {},
           modalActive : false,
           modal:{
             author: '',
@@ -100,15 +103,12 @@
           }
         }
       },
-      computed:{
-        place(){
-          var placeID = this.$route.params.id;
-          var place = this.$store.getters.findPage(placeID);
-
-          return place;
-        }
-      },
       methods:{
+        findPlace(){
+          let placeID = this.$route.params.id;
+          let getPlace = this.$store.getters.findPage(placeID);
+          this.place = getPlace;
+        },
         callModal(){
           this.modalActive = !this.modalActive;
         },
@@ -119,6 +119,19 @@
         getRating(rating){
           this.modal.rating = rating;
         }
+      },
+      computed:{
+        checkAvg(){
+          let place = this.place.averageCheck;
+          let money = this.$store.state.filters.howMach;
+
+          return Math.round(place /(money / 100));
+        }
+      },
+      mounted(){
+        this.$nextTick(
+          this.findPlace()
+        )
       }
     }
 </script>
