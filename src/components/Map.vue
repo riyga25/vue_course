@@ -86,8 +86,9 @@
             });
           }
         },
+
         sendCoords(){
-          this.$emit('coords',this.place);
+          this.$emit('sendCoords',this.place);
         },
       },
       beforeMount(){

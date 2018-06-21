@@ -1,11 +1,11 @@
 <template>
       <header class="header">
         <div class="wrapper header__container">
-          <router-link class="header__left" to="/">Прогуляй стипендию!</router-link>
+          <router-link class="header__left" :to="{name:'home'}" >Прогуляй стипендию!</router-link>
           <div class="header__center">
             Размер стипендии <input type="text" class="h-money" @keyup="changeMoney" :value="money"> ₽
           </div>
-          <router-link to="/edit" class="header__right">
+          <router-link :to="{name:'add'}" class="header__right">
             Добавить место
           </router-link>
         </div>

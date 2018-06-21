@@ -1,11 +1,8 @@
 import Vue from 'vue';
 import Vuex from  'vuex';
-import axios from 'axios';
+import api from './modules/api';
 
 Vue.use(Vuex);
-
-axios.defaults.headers.common['Authorization'] = 'Basic Y291cnNlcy1mcm9udGVuZDpybEdFT29WUndL';
-
 
 const store = new Vuex.Store({
   state: {
@@ -20,97 +17,11 @@ const store = new Vuex.Store({
     categories :[]
   },
   actions: {
-    loadData({commit}){
-      axios.post(
-        '/api/graphql',
-        {query: `{entities {id name image address averageCheck rating lat lon category {id, name} reviews {id, text, author, rating}}
-        }`}).then(
-        response => {
-          commit('loadData', response.data.data.entities);
-        }
-      ).catch( e =>
-        console.log('get places error. . . '+e)
-      )
-    },
-    loadCategories({commit}){
-      axios.post(
-        'api/graphql',
-        {query: `{categories{id name}}`}).then(
-          response => {
-            commit('loadCategories',response.data.data.categories);
-          }
-        ).catch( e =>
-          console.log('get categories error. . . '+e)
-        )
-    },
-    addPlace (context, place) {
-      console.log(place);
-      return axios.post('/api/graphql', {
-        query: `mutation ($newPlace: EntityInput!, $id: ID!) {
-          createEntity(input: $newPlace, categoryId: $id) {name id}
-        }`,
-        variables: {
-          'id': place.category.id + 100,
-          'newPlace': {
-            'name': place.name,
-            'address': place.address,
-            'averageCheck': place.averageCheck,
-            'image': place.image,
-            'lat': place.lat,
-            'lon': place.lon
-          }
-        }
-      })
-    },
-    deletePlace (context, id) {
-      return axios.post('/api/graphql', {
-        query: `mutation {
-          removeEntity(id: ${id}) {id name}}`
-      })
-    },
-
-    updatePlace (context, place) {
-      let object = {
-        name: place.name,
-        address: place.address,
-        averageCheck: place.averageCheck,
-        image: place.image,
-        lat: place.lat,
-        lon: place.lon
-      };
-      axios.post('/api/graphql', {
-        query: `mutation ($id: ID!, $newPlace: EntityInput!){
-          updateEntity(id: $id, input: $newPlace) {name id}
-        }`,
-        variables: {
-          'id': place.id,
-          'newPlace': object
-        }
-      })
-        .then(response => {
-          console.log('Updated data recieved', response.data)
-        })
-        .catch(err => console.log('updatePlace error: ', err))
-    },
-    addReview (context, review) {
-      return axios.post('/api/graphql', {
-        query: `mutation ($newReview: ReviewInput!, $entityId: ID!) {
-          createReview(input: $newReview, entityId: $entityId) {
-            author,
-            text,
-            id,
-            entity {id}, 
-            rating
-          }
-        }`,
-        variables: {
-          'newReview': review.review,
-          'entityId': review.placeId
-        }
-      })
-    },
     resetFilters({commit}){
       commit('resetFilters');
+    },
+    categoryUpdate({commit},category){
+      commit('categoryUpdate',category);
     }
   },
   mutations: {
@@ -141,10 +52,6 @@ const store = new Vuex.Store({
     ratingUpdate(state,n){
       state.filters.stars = n.rating;
     },
-    addPlace(state,place){
-      place.id = state.places.length + 101;
-      state.places.push(place);
-    },
     resetFilters(state){
       let filter = state.filters;
 
@@ -152,6 +59,9 @@ const store = new Vuex.Store({
       filter.category = 'all';
       filter.rangeMin = 0;
       filter.rangeMax = 100;
+    },
+    addPlace(state, place) {
+      state.places.push(place);
     },
     deletePlace(state,placeID){
       let index = state.places.findIndex(place => place.id === placeID);
@@ -162,6 +72,10 @@ const store = new Vuex.Store({
     updatePlace(state,item){
       let thisPlace = state.places.find(place => place.id === item.id);
       thisPlace = item;
+    },
+    addReview(state,{review,item}){
+      let thisPlace = state.places.find(place => place.id === item.id);
+      thisPlace.reviews.push(review);
     }
   },
   getters: {
@@ -229,7 +143,9 @@ const store = new Vuex.Store({
       return category(stars(range(state.places)));
     }
   },
-  modules: {}
+  modules: {
+    api
+  }
 });
 
 export default store;

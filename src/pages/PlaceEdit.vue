@@ -3,7 +3,7 @@
     <div class="preheader">
       <div class="wrapper">
         <router-link :to="{name: 'home'}" class="preheader__desk preheader__desk_back">Вернуться к списку</router-link>
-        <h2 class="perheader__title">Добавление места</h2>
+        <h2 class="perheader__title">Изменение места</h2>
       </div>
     </div>
     <div class="main-info">
@@ -40,53 +40,47 @@
         <div class="big-map">
           <div class="big-map__label">Укажите место на карте:</div>
           <div class="big-map__img">
-            <Map :placeAdd="true" @sendCoords="getCoords"></Map>
+            <Map :placeAdd="true" :places="place" @sendCoords="getCoords"></Map>
           </div>
         </div>
       </div>
-      <a @click="addPlace(place)" class="add-place">Добавить место</a>
+      <a @click="updatePlace(place)" class="add-place">Изменить место</a>
     </div>
   </main>
 </template>
 
 <script>
-    import Map from "../components/Map";
-    import Select from "../components/Select";
-    export default {
-      name: "PlaceAdd",
-      components: {Select, Map},
-      data(){
-          return{
-            place: {
-              name: '',
-              address: '',
-              averageCheck: '',
-              category: {
-                id: null,
-                name: ''
-              },
-              image: '',
-              lat: 0,
-              lon: 0,
-              reviews: []
-            }
+  import Map from "../components/Map";
+  import Select from "../components/Select";
 
-          }
-      },
-      methods:{
-        addPlace(place){
-          this.$store.dispatch('addPlace',place);
-        },
-        getCategory(category){
-          this.place.category = category;
-        },
-        getCoords(coords){
-          this.place.lat = parseFloat(coords[0]);
-          this.place.lon = parseFloat(coords[1]);
-        }
-      },
-      mounted(){
-        this.addPlace
+  export default {
+    name: "PlaceEdit",
+    components: {Select, Map},
+    data(){
+      return{
+        place:{}
       }
+    },
+    computed:{
+      getPlace(){
+        let placeID = this.$route.params.id;
+        this.place = this.$store.getters.findPage(placeID);
+      }
+    },
+    methods:{
+      updatePlace(thisPlace){
+        this.$store.dispatch('updatePlace',thisPlace)
+      },
+      getCategory(category){
+        this.place.category = category;
+      },
+      getCoords(coords){
+        this.place.lat = parseFloat(coords[0]);
+        this.place.lon = parseFloat(coords[1]);
+      }
+    },
+    mounted(){
+      this.getPlace
     }
+  }
 </script>

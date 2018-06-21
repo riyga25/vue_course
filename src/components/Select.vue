@@ -28,10 +28,11 @@
           options.forEach(function (option) {
             if(option.id === cat.id){
               cat.name = option.name;
+              cat.id = option.id;
             }
           });
 
-          this.$emit('category',cat);
+          this.$emit('selectCategory',cat);
         }
       }
     }
