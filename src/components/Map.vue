@@ -8,15 +8,16 @@
       props: ['places','placeAdd'],
       data(){
         return{
-          dots:[],
           place: [],
           myMap: null
         }
       },
-      methods:{
+      computed:{
         getPlaces(){
-          this.dots = this.places;
+            return this.places;
         },
+      },
+      methods:{
         mapAdd(){
           let element = document.getElementById('mapID');
           const yaMapScript = document.createElement('SCRIPT');
@@ -28,7 +29,7 @@
             yaMapScript.setAttribute('id','mapID');
             document.body.appendChild(yaMapScript);
             yaMapScript.onload = () =>{
-              window.ymaps.ready(this.mapSave());
+              window.ymaps.ready(this.mapSave);
             };
             yaMapScript.onerror = (err)=> handleError(err);
           };
@@ -42,66 +43,56 @@
           }
 
         },
+
         mapSave(){
-          return ()=>{
-            console.log('mapSave');
-            this.myMap = new ymaps.Map("map", {
-              center: [54.316855, 48.402557],
-              zoom: 12,
-              controls: ['zoomControl']
+          let $Map = {};
+          let dots = this.getPlaces;
+          console.log(dots);
+
+          $Map = new ymaps.Map("map", {
+            center: [54.316855, 48.402557],
+            zoom: 12,
+            controls: ['zoomControl']
+          });
+
+          let addMark = (coords) => {
+            let placemark;
+            placemark = new ymaps.Placemark([coords.lat, coords.lon],
+              {iconCaption: coords.name});
+              $Map.geoObjects.add(placemark);
+          };
+
+          if(dots){
+            if(dots.length){
+              dots.forEach((dot)=> {
+                addMark(dot);
+              })
+            }
+            else{
+              addMark(dots);
+            }
+          }
+
+          if(this.placeAdd){
+            $Map.events.add('click', (e) => {
+              $Map.geoObjects.removeAll();
+
+              let co = e.get('coords');
+              this.place = co;
+              this.sendCoords();
+
+              let placemark = new ymaps.Placemark(co);
+              $Map.geoObjects.add(placemark);
             });
           }
         },
-        mapInit(dots){
-          return () => {
-            console.log('mapInit');
-            if(dots){
-              if(dots.length){
-                dots.forEach((dot)=> {
-                  this.addMark(dot);
-                })
-              }
-              else{
-                this.addMark(dots);
-              }
-            }
-
-            if(this.placeAdd){
-              // this.myMap.events.add('click', (e) => {
-              //   this.myMap.geoObjects.removeAll();
-			  //
-              //   let coords = e.get('coords');
-              //   this.place = coords;
-              //   this.sendCoords();
-			  //
-              //   let placemark = new ymaps.Placemark(coords);
-              //   this.myMap.geoObjects.add(placemark);
-              // });
-            }
-
-          };
-        },
-        addMark(coords){
-          console.log('marks');
-          let placemark;
-          placemark = new ymaps.Placemark([coords.lat, coords.lon],
-            {iconCaption: coords.name});
-          this.myMap.geoObjects.add(placemark);
-        },
-
         sendCoords(){
-            this.$emit('coords',this.place);
+          this.$emit('coords',this.place);
         },
       },
       beforeMount(){
         this.$nextTick(
-            this.getPlaces(),
-            this.mapAdd()
-        )
-      },
-      mounted(){
-        this.$nextTick(
-          this.mapInit()
+            this.mapAdd
         )
       }
     }

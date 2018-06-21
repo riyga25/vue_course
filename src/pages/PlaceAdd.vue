@@ -29,11 +29,10 @@
             <div class="inputs__item upload-file">
               <label class="upload-file__label" for="place-photo">
                 Фото:
-                <span class="upload-file__place"></span>
-                <input class="upload-file__input" type="file" id="place-photo" accept="image/jpeg,image/jpg,image/png">
+                <input class="upload-file__input" type="text" v-model="place.image"  id="place-photo">
               </label>
-              <div class="upload-file__preview">
-                <img src="./../assets/img/uploadphoto.jpg" alt="image">
+              <div class="upload-file__preview" v-if="place.image">
+                <img :src="place.image" alt="image">
               </div>
             </div>
           </div>
@@ -62,21 +61,26 @@
               name: '',
               address:'',
               averageCheck:'',
-              category:'',
-              coords:''
+              image:'',
+              category:0,
+              lat:0,
+              lot:0
             }
           }
+      },
+      computed:{
+        getCoords(coords){
+          this.place.lat = parseFloat(coords[0]);
+          this.place.lot = parseFloat(coords[1]);
+        },
       },
       methods:{
         getCategory(category){
           this.place.category = category;
         },
-        getCoords(coords){
-            this.place.coords = coords;
-        },
         addPlace(place){
           this.$store.dispatch('addPlace', place);
-          this.$router.push('/');
+          // this.$router.push('/');
         }
       }
     }

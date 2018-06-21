@@ -1,7 +1,7 @@
 <template>
   <div class="select-container">
     <select name="category" id="place-category" v-model="category.id" v-on:change="wtfCategory">
-      <option value="all"></option>
+      <option value="all" selected="selected">Все</option>
       <option v-for="option in options" :key="option.id" :value="option.id">{{option.name}}</option>
     </select>
   </div>
@@ -12,10 +12,14 @@
         name: "Select",
         data(){
           return{
-            options:[],
             category:{},
           }
         },
+      computed:{
+        options(){
+          return this.$store.state.categories;
+        }
+      },
       methods:{
         wtfCategory(){
           var cat = this.category;
@@ -28,15 +32,7 @@
           });
 
           this.$emit('category',cat);
-        },
-        getCategories(){
-          this.options = this.$store.state.categories;
         }
-      },
-      mounted(){
-          this.$nextTick(
-            this.getCategories()
-          )
       }
     }
 </script>

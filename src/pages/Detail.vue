@@ -4,13 +4,13 @@
       <div class="wrapper">
         <router-link :to="{name: 'home'}" class="preheader__desk preheader__desk_back">Вернуться к списку</router-link>
         <div class="p-detail">
-          <div class="p-detail__name">{{place.name}}</div>
+          <div class="p-detail__name">{{findPlace.name}}</div>
           <div class="p-detail__rating">
-            <Stars :inValue="place.rating" :disabled="true"></Stars>
+            <Stars :inValue="findPlace.rating" :disabled="true"></Stars>
           </div>
           <div class="p-detail__address">
-            <div class="gray-text">{{place.category.name}},</div>
-            {{place.address}}
+            <div class="gray-text">{{findPlace.category.name}},</div>
+            {{findPlace.address}}
           </div>
         </div>
       </div>
@@ -21,26 +21,26 @@
           <div class="m-detail__left">
             <div class="m-detail__bg"></div>
             <div class="m-detail__info">
-              <span class="text-gray">Средний чек</span> {{place.averageCheck}} ₽<br>
+              <span class="text-gray">Средний чек</span> {{findPlace.averageCheck}} ₽<br>
               <span class="gray-text">Здесь можно прогулять</span> <br>
               {{checkAvg}} % стипендии
             </div>
-            <div class="m-detail__img" v-if="place.image">
-              <img :src="place.image" alt="">
+            <div class="m-detail__img" v-if="findPlace.image">
+              <img :src="findPlace.image" alt="">
             </div>
             <div class="m-detail__map">
-              <Map :places="place"></Map>
+              <Map :places="findPlace"></Map>
             </div>
           </div>
           <div class="m-detail__right">
             <div class="m-detail__head">
               <div class="m-detail__count">
-                Отзывы: <span class="gray-text" v-if="place.reviews" >({{place.reviews.length}})</span>
+                Отзывы: <span class="gray-text" v-if="findPlace.reviews" >({{findPlace.reviews.length}})</span>
               </div>
               <div class="m-detail__btn" @click="callModal">Написать отзыв</div>
             </div>
-            <div class="m-detail__list" v-if="place.reviews">
-              <div class="m-detail__item detail-item" v-for="review in place.reviews" :key="place.reviews.id">
+            <div class="m-detail__list" v-if="findPlace.reviews">
+              <div class="m-detail__item detail-item" v-for="review in findPlace.reviews" :key="findPlace.reviews.id">
                 <div class="detail-item__head">
                   <div class="detail-item__name gray-text">
                     {{review.author}}
@@ -99,20 +99,25 @@
             author: '',
             text: '',
             rating: Number,
-            id: this.$route.params.id
+            id: 0,
+            placeId: this.$route.params.id
           }
         }
       },
       methods:{
-        findPlace(){
-          let placeID = this.$route.params.id;
-          let getPlace = this.$store.getters.findPage(placeID);
-          this.place = getPlace;
-        },
         callModal(){
           this.modalActive = !this.modalActive;
         },
         addReview(modal){
+
+          if(this.place.reviews){
+            this.modal.id = place.reviews.length + 100;
+          }
+          else{
+            this.place.reviews = [];
+            this.modal.id = 100;
+          }
+
           this.$store.dispatch('addReview',modal);
           this.callModal();
         },
@@ -121,17 +126,16 @@
         }
       },
       computed:{
+        findPlace(){
+          let placeID = this.$route.params.id;
+          return this.$store.getters.findPage(placeID);
+        },
         checkAvg(){
-          let place = this.place.averageCheck;
+          let place = this.findPlace.averageCheck;
           let money = this.$store.state.filters.howMach;
 
           return Math.round(place /(money / 100));
         }
-      },
-      mounted(){
-        this.$nextTick(
-          this.findPlace()
-        )
       }
     }
 </script>

@@ -11,10 +11,9 @@ const store = new Vuex.Store({
   state: {
     filters:{
       stars : 0,
-      place : null,
       rangeMin : 0,
       rangeMax : 100,
-      howMach : 2000,
+      howMach : 10000,
       category : 'all'
     },
     places :[],
@@ -44,22 +43,85 @@ const store = new Vuex.Store({
           console.log('get categories error. . . '+e)
         )
     },
-    addPlace({commit}, place) {
-      commit('addPlace', place)
+    addPlace (context, place) {
+      console.log(place);
+      return axios.post('/api/graphql', {
+        query: `mutation ($newPlace: EntityInput!, $id: ID!) {
+          createEntity(input: $newPlace, categoryId: $id) {name id}
+        }`,
+        variables: {
+          'id': place.category.id + 100,
+          'newPlace': {
+            'name': place.name,
+            'address': place.address,
+            'averageCheck': place.averageCheck,
+            'image': place.image,
+            'lat': place.lat,
+            'lon': place.lon
+          }
+        }
+      })
     },
-    deletePlace({commit}, place) {
-      commit('deletePlace', place);
+    deletePlace (context, id) {
+      return axios.post('/api/graphql', {
+        query: `mutation {
+          removeEntity(id: ${id}) {id name}}`
+      })
     },
-    addReview({commit}, review) {
-      commit('addReview', review);
+
+    updatePlace (context, place) {
+      let object = {
+        name: place.name,
+        address: place.address,
+        averageCheck: place.averageCheck,
+        image: place.image,
+        lat: place.lat,
+        lon: place.lon
+      };
+      axios.post('/api/graphql', {
+        query: `mutation ($id: ID!, $newPlace: EntityInput!){
+          updateEntity(id: $id, input: $newPlace) {name id}
+        }`,
+        variables: {
+          'id': place.id,
+          'newPlace': object
+        }
+      })
+        .then(response => {
+          console.log('Updated data recieved', response.data)
+        })
+        .catch(err => console.log('updatePlace error: ', err))
     },
-    updatePlace({commit}, place) {
-      commit('updatePlace', place);
+    addReview (context, review) {
+      return axios.post('/api/graphql', {
+        query: `mutation ($newReview: ReviewInput!, $entityId: ID!) {
+          createReview(input: $newReview, entityId: $entityId) {
+            author,
+            text,
+            id,
+            entity {id}, 
+            rating
+          }
+        }`,
+        variables: {
+          'newReview': review.review,
+          'entityId': review.placeId
+        }
+      })
     },
+    resetFilters({commit}){
+      commit('resetFilters');
+    }
   },
   mutations: {
     loadData(state,places){
-      state.places = places;
+      let arr = [];
+      places.forEach((place)=>{
+        if(place != null){
+          arr.push(place);
+        }
+      });
+      state.places = arr;
     },
     loadCategories(state,categories){
       state.categories = categories;
@@ -83,6 +145,14 @@ const store = new Vuex.Store({
       place.id = state.places.length + 101;
       state.places.push(place);
     },
+    resetFilters(state){
+      let filter = state.filters;
+
+      filter.stars = 0;
+      filter.category = 'all';
+      filter.rangeMin = 0;
+      filter.rangeMax = 100;
+    },
     deletePlace(state,placeID){
       let index = state.places.findIndex(place => place.id === placeID);
       if (index > -1) {
@@ -92,72 +162,71 @@ const store = new Vuex.Store({
     updatePlace(state,item){
       let thisPlace = state.places.find(place => place.id === item.id);
       thisPlace = item;
-    },
-    addReview(state,review){
-      let place = state.places.find(place => place.id === review.id);
-
-      if(place.reviews){
-        let reviewId = place.reviews.length + 101;
-        review.id = reviewId;
-      }
-      else{
-        place.reviews = [];
-        review.id = 100;
-      }
-      place.reviews.push(review);
     }
   },
   getters: {
     findPage : state => id =>{
       return state.places.find(place => place.id === id)
     },
-    filterRange:(state)=>{
-      let count = state.filters.howMach;
-      let maxNum = state.filters.rangeMax;
-      let minNum = state.filters.rangeMin;
-      let places = [];
+    stars:(state)=>{
+      return state.filters.stars;
+    },
+    allPlaces:(state)=>{
+      return state.places.length;
+    },
 
-      state.places.forEach((place)=>{
-        let check = place.averageCheck;
+    Filters:(state)=>{
 
-        if(check/(count / 100) > minNum && check/(count / 100) < maxNum){
-          places.push(place);
+      function category(items){
+        let newItems = [];
+
+        if(state.filters.category != 'all'){
+          items.forEach((place)=>{
+            if(place.category.id === state.filters.category){
+              newItems.push(place);
+            }
+          });
         }
-      });
+        else{newItems = items}
 
-      return places;
-    },
-    filterCategory:(state)=>{
-      let places = [];
+        return newItems;
+      }
 
-      if(state.filters.category != 'all'){
-        state.places.forEach((place)=>{
-          if(place.category.id === state.filters.category){
-            places.push(place);
+      function range(items) {
+        let newItems = [];
+        let count = state.filters.howMach;
+        let maxNum = state.filters.rangeMax;
+        let minNum = state.filters.rangeMin;
+
+        items.forEach((place)=>{
+          let check = place.averageCheck;
+
+          if(check/(count / 100) > minNum && check/(count / 100) < maxNum){
+            newItems.push(place);
           }
         });
-      }
-      else{
-        places = state.places;
+
+        return newItems;
       }
 
-      return places;
-    },
-    filterStars:(state)=>{
-      let places = [];
+      function stars(items) {
+        let newItems = [];
 
-      if(state.filters.stars != 0){
-        state.places.forEach((place)=>{
-          if(place.rating >= state.filters.stars || place.rating === 0){
-            places.push(place);
-          }
-        });
-      }
-      else{
-        places = state.places;
+        if(state.filters.stars != 0){
+          items.forEach((place)=>{
+            if(place.rating >= state.filters.stars || place.rating === 0){
+              newItems.push(place);
+            }
+          });
+        }
+        else{
+          newItems = items;
+        }
+
+        return newItems;
       }
 
-      return places;
+      return category(stars(range(state.places)));
     }
   },
   modules: {}

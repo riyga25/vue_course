@@ -292,7 +292,7 @@ input[type="file"]{
 .m-place{
   padding: 8px 8px 8px 16px;
   background: white;
-  width: 364px;
+  width: 385px;
   margin-bottom: 18px;
   position: relative;
   border: 1px solid #E0E0E0;
@@ -492,4 +492,14 @@ input[type="file"]{
 .edit-input{
   max-width: 60%;
   height: 26px;
+}
+.main-info{
+
+  &__count{
+    margin-bottom: 20px;
+
+    span{
+      cursor: pointer;
+    }
+  }
 }
